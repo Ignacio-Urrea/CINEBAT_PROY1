@@ -15,6 +15,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -31,34 +32,7 @@ import javafx.stage.Stage;
 public class CINEBAT_PROY1 extends Application {
      private int x=20;
     @Override
-    public void start(Stage stage) {
-        /*
-        Group root = new Group();
-        Scene scene = new Scene(root, 900, 600);
-        stage.setScene(scene);
-        stage.setTitle("");
-
-        VBox vb = new VBox();
-
-        Pane canvas = new Pane();
-        canvas.setStyle("-fx-background-color: black;");
-        canvas.setPrefSize(900,600);
-        Circle circle = new Circle(10,Color.BLUE);
-        circle.relocate(x, 500);
-        Rectangle rectangle = new Rectangle(100,100,Color.RED);
-        rectangle.relocate(70,500);
-        //canvas.getChildren().addAll(circle);
-        while(x<900){
-            x+=50;
-            circle.relocate(x, 500);
-            canvas.getChildren().addAll(circle);
-            
-        }
-        vb.getChildren().add(canvas);
-
-        scene.setRoot(vb);
-        stage.show();
-        */
+    public void start(Stage stage) {       
         Pane canvas = new Pane();
     	Scene scene = new Scene(canvas, 300, 300);
     	Circle ball = new Circle(10, Color.RED);
@@ -77,7 +51,13 @@ public class CINEBAT_PROY1 extends Application {
         timeline.play();
         
     }
+    public static double onda(double x){
+        double y;
+        y = Math.cos(7*3.14*1000)*Math.sin(2*3.14*(1)/(1000)*x);
+        return y;
+    }
 
+    
     /**
      * @param args the command line arguments
      */
@@ -91,5 +71,67 @@ public class CINEBAT_PROY1 extends Application {
             canvas.getChildren().addAll(circle);
             
         }
+    }
+    private void drawShapes(GraphicsContext gc) {
+        gc.setStroke(Color.LIMEGREEN);
+        gc.setFill(Color.CHOCOLATE);
+        gc.setLineWidth(50);
+        double x = 0;
+        double xfalso = Math.random() * 10000;
+        double y = onda(xfalso)*666 +850;
+        double x2;
+        double y2;
+        
+        double mapaX[];
+        double mapaY[];
+        double mapaX2[];
+        double mapaY2[];
+        
+        mapaX = new double[203];
+        mapaY = new double[203];
+        mapaX2 = new double[203];
+        mapaY2 = new double[203];
+        
+        int puntos = 0;
+        
+        while (x<2000){
+            x2 = x+10;
+            xfalso = xfalso+10;
+            y2 = (onda(xfalso)*666)+850 + (Math.random() * (8 + 4 + 1) -4);
+            gc.strokeLine(x, y, x2, y2);
+            
+            mapaX[puntos]=x;
+            mapaY[puntos] = y+20;
+            mapaX2[puntos]=x;
+            mapaY2[puntos]=y-20;
+            
+            puntos++;
+            
+            
+            x = x2;
+            y=y2;
+            
+            
+        }
+        
+        
+        mapaX2[puntos] = 2000;
+        mapaY2[puntos] = 0;
+        mapaX2[puntos+1] = 0;
+        mapaY2[puntos+1]=0;
+        mapaX2[puntos+2] = mapaX2[0];
+        mapaY2[puntos+2] = mapaY2[0];
+                
+        mapaX[puntos] = 2000;
+        mapaY[puntos]= 1000;
+        mapaX[puntos+1]=0;
+        mapaY[puntos+1]=1000;
+        mapaX[puntos+2]=mapaX[0];
+        mapaY[puntos+2]=mapaY[0];
+        gc.fillPolygon(mapaX, mapaY, puntos+3);
+        
+        gc.setFill(Color.CORNFLOWERBLUE);
+        gc.fillPolygon(mapaX2, mapaY2, puntos+3);
+     
     }
 }
