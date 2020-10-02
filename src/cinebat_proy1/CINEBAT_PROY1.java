@@ -15,6 +15,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
@@ -50,12 +51,33 @@ public class CINEBAT_PROY1 extends Application {
         timeline.setCycleCount(2);
         timeline.play();
         
+        
+        /*stage.setTitle("Prueba generador de mapas");
+        Group root = new Group();
+        Canvas canvas2 = new Canvas(2000, 1000);
+        GraphicsContext gc = canvas2.getGraphicsContext2D();
+        
+        //drawShapes(gc);//luego se reemplaza con Mapa()
+        Mapa mapa = new Mapa();
+        mapa.Mapa(gc);
+                
+        root.getChildren().add(canvas);
+        stage.setScene(new Scene(root));
+        stage.show(); // <----- Esto es lo que hace el show del mapa no c como mezclarlo con tu codigo, suerte bro
+        */
     }
-    public static double onda(double x){
-        double y;
-        y = Math.cos(7*3.14*1000)*Math.sin(2*3.14*(1)/(1000)*x);
-        return y;
-    }
+    
+    /*public void start(Stage stage) {
+        stage.setTitle("Prueba generador de mapas");
+        Group root = new Group();
+        Canvas canvas = new Canvas(2000, 1000);
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        //drawShapes(gc);//luego se reemplaza con Mapa()
+        root.getChildren().add(canvas);
+        stage.setScene(new Scene(root));
+        stage.show();
+    } */
+    
 
     
     /**
@@ -72,7 +94,7 @@ public class CINEBAT_PROY1 extends Application {
             
         }
     }
-    private void drawShapes(GraphicsContext gc) {
+    /*private void drawShapes(GraphicsContext gc) {
         gc.setStroke(Color.LIMEGREEN);
         gc.setFill(Color.CHOCOLATE);
         gc.setLineWidth(50);
@@ -133,5 +155,5 @@ public class CINEBAT_PROY1 extends Application {
         gc.setFill(Color.CORNFLOWERBLUE);
         gc.fillPolygon(mapaX2, mapaY2, puntos+3);
      
-    }
+    }*/
 }
