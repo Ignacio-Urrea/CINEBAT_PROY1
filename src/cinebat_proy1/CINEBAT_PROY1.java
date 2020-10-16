@@ -37,17 +37,19 @@ public class CINEBAT_PROY1 extends Application {
         Pane canvas = new Pane();
     	Scene scene = new Scene(canvas, 300, 300);
     	Circle ball = new Circle(10, Color.RED);
-        ball.relocate(0, 10);
-
+        ball.relocate(0, 10);    
         canvas.getChildren().add(ball);
-
-        stage.setTitle("Moving Ball");
+        stage.setTitle(" mov");
         stage.setScene(scene);
         stage.show();
-
         Bounds bounds = canvas.getBoundsInLocal();
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1),
-                new KeyValue(ball.layoutXProperty(), bounds.getMaxX()-ball.getRadius())));
+                new KeyValue(
+                        
+                        
+                        
+                        ball.layoutXProperty()
+                        , bounds.getMaxX()-ball.getRadius())));
         timeline.setCycleCount(2);
         timeline.play();
         
