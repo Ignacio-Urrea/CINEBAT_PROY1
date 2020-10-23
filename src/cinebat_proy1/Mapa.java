@@ -5,11 +5,11 @@
  */
 package cinebat_proy1;
 
-//a
+
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
+
 /**
  *
  * @author sfmnl
@@ -131,7 +131,7 @@ public class Mapa {
     
     private static double onda(double x){
         double y;
-        y = Math.cos(7*3.14*1000)*Math.sin(2*3.14*(1)/(1000)*x);
+        y = Math.cos(7*3.14*1250)*Math.sin(2*3.14*(1)/(1250)*x);
         return y;
     }
 }
