@@ -12,6 +12,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
+import javafx.scene.text.Text;
 
 /**
  *
@@ -24,12 +25,13 @@ public class Tanque {
     private double posicionX;
     private double posicionY;
     private int equipo;
+    private int hp;
     
     public Tanque(double x, double y, int jugador){
         posicionX = x;
         posicionY = y;
         equipo = jugador;
-        
+        hp = 100;
         
     }
     
@@ -132,10 +134,24 @@ public class Tanque {
     
     public int getEquipo(){return equipo;}
     
+    public void impacto(int tipo){
+        if(tipo==1){hp-=50;}
+        else if(tipo==2){hp-=40;}
+        else{hp-=30;}
+    }
+    
+    public int getHP(){return hp;}
+    
     public boolean intersects(Bala bala){//bala tiene que ser un Rectangle2D
         return bala.getBoundary().intersects(this.getBoundary());
         
     } 
+    
+    public void render(GraphicsContext gc){
+        gc.clearRect(0, 0, 2000, 1000);
+        gc.fillText(hp+"%", posicionX, posicionY-100);
+        
+    }
     
     public double getX(){return posicionX;}
     public double getY(){return posicionY;}

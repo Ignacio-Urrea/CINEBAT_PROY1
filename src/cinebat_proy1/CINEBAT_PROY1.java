@@ -8,6 +8,8 @@ package cinebat_proy1;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 
 import javafx.geometry.Bounds;
 import javafx.scene.Group;
@@ -15,6 +17,8 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 
 import javafx.scene.text.Font;
@@ -45,17 +49,29 @@ public class CINEBAT_PROY1 extends Application {
     
     Canvas capa2 = new Canvas(2000,1000);
     Canvas capa3 = new Canvas(2000,1000);
+    Canvas capa4 = new Canvas(2000,1000);
+    Canvas capa5 = new Canvas(2000,1000);
+    
     root.getChildren().add(capa2);
     root.getChildren().add(capa3);
+    root.getChildren().add(capa4);
+    root.getChildren().add(capa5);
     
     GraphicsContext sBala = capa2.getGraphicsContext2D();
     GraphicsContext trayect = capa3.getGraphicsContext2D();
+    GraphicsContext vida = capa4.getGraphicsContext2D();
+    GraphicsContext vida2 = capa5.getGraphicsContext2D();
     
+    capa5.toFront();
+    capa4.toFront();
     capa3.toFront();
     capa2.toFront();
     
+    
     Mapa mapa = new Mapa();
     mapa.genMapa(gc);
+    
+    Bala bala = new Bala(0, 0, 0, 0);
     
     Tanque tanque1 = new Tanque(500.0, 500.0, 1);
     Tanque tanque2 = new Tanque(1000.0, 500.0, 2);
@@ -77,28 +93,116 @@ public class CINEBAT_PROY1 extends Application {
     TextField fuerza1 = new TextField();
     TextField fuerza2 = new TextField();
     
-    Button disparar1 = new Button("Disparar");
-    Button disparar2 = new Button("Disparar");
+    Button disparar1 = new Button("(J1) Disparar");
+    Button disparar2 = new Button("(J2) Disparar");
+    
+    
+    
+    MenuItem p105 = new MenuItem("105mm");
+    
+    p105.setOnAction(new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            bala.setTipo(1);
+        }
+    });
+    
+    MenuItem pPerf = new MenuItem("Perforante");
+    
+    pPerf.setOnAction(new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            bala.setTipo(2);
+        }
+    });
+    
+    MenuItem p60 = new MenuItem("60mm");
+    
+        p60.setOnAction(new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            bala.setTipo(3);
+        }
+    });
+        
+    MenuItem p105b = new MenuItem("105mm");
+    
+    p105b.setOnAction(new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            bala.setTipo(1);
+        }
+    });
+    
+    MenuItem pPerfb = new MenuItem("Perforante");
+    
+    pPerfb.setOnAction(new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            bala.setTipo(2);
+        }
+    });
+    
+    MenuItem p60b = new MenuItem("60mm");
+    
+        p60b.setOnAction(new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            bala.setTipo(3);
+        }
+    });
+        
+    MenuButton proyectil1 = new MenuButton("Tipo de Proyectil", null, p105, pPerf, p60);
+    MenuButton proyectil2 = new MenuButton("Tipo de Proyectil", null, p105b, pPerfb, p60b);
+    
+    proyectil1.relocate(40, 150);
+    proyectil2.relocate(1590, 150);
+    
+    
+    
+    
+    
     //Texto en gris
-    angulo1.setPromptText("Angulo (A°)");
-    fuerza1.setPromptText("Fuerza");
-    angulo2.setPromptText("Angulo (A°)");
-    fuerza2.setPromptText("Fuerza");
+    
+    Text ANGULO1 = new Text();
+    Text ANGULO2 = new Text();
+    Text FUERZA1 = new Text();
+    Text FUERZA2 = new Text();
+    
+    ANGULO1.setText("Angulo: ");
+    ANGULO2.setText("Angulo: ");
+    FUERZA1.setText("Fuerza: ");
+    FUERZA2.setText("Fuerza: ");
+    
+    
+    angulo1.setPromptText("0-90");
+    fuerza1.setPromptText("0-300");
+    angulo2.setPromptText("0-90");
+    fuerza2.setPromptText("0-300");
     
     angulo1.relocate(100, 50);
     fuerza1.relocate(100, 100);
-    disparar1.relocate(150, 150);
+    disparar1.relocate(200, 150);
+    ANGULO1.setX(40);
+    FUERZA1.setX(40);
+    ANGULO1.setY(70);
+    FUERZA1.setY(120);
+    
     
     angulo2.relocate(1650, 50);
     fuerza2.relocate(1650, 100);
-    disparar2.relocate(1700, 150);
-     
-    Bala bala = new Bala(0, 0, 0, 0);
+    disparar2.relocate(1750, 150);
+    ANGULO2.setX(1590);
+    FUERZA2.setX(1590);
+    ANGULO2.setY(70);
+    FUERZA2.setY(120);
+    
+    
     
     disparar1.setOnAction(e -> disparo(angulo1, fuerza1, turno, tanque1, bala) );
     disparar2.setOnAction(e -> disparo(angulo2, fuerza2, turno, tanque2, bala) );
     
-    root.getChildren().addAll(angulo1, fuerza1, disparar1, angulo2,fuerza2,disparar2);
+    root.getChildren().addAll(angulo1, fuerza1, disparar1, angulo2,fuerza2,disparar2,ANGULO1,ANGULO2,FUERZA1,FUERZA2,proyectil2, proyectil1);
     
     Text TXT = new Text();
     TXT.setX(750);
@@ -107,7 +211,9 @@ public class CINEBAT_PROY1 extends Application {
     TXT.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 30));
     root.getChildren().add(TXT);
       
-      
+    tanque1.render(vida);
+    tanque2.render(vida2);
+    
     
     Ganador ganador = new Ganador();
     final Bounds limites = root.getBoundsInLocal();
@@ -125,14 +231,26 @@ public class CINEBAT_PROY1 extends Application {
             if (turno.getTurno()==1){
                 
                 bala.update(tanque1.getX()+70, tanque1.getY()-55, elapsedTime, tanque1, root );
-                if (tanque2.intersects(bala)){bala.setMuerto(true);ganador.setGanador(1);}
+                if (tanque2.intersects(bala)){
+                    bala.setMuerto(true);
+                    tanque2.impacto(bala.getTipo());
+                    tanque2.render(vida2);
+                    if(tanque2.getHP()<=0){ganador.setGanador(1);}
+                    else{turno.sigTurno();}
+                }
                 
             }
             
             if (turno.getTurno()==2 ){
                 
                 bala.update(tanque2.getX()-70, tanque2.getY()-55, elapsedTime, tanque2, root);
-                if (tanque1.intersects(bala)){bala.setMuerto(true);ganador.setGanador(2);}
+                if (tanque1.intersects(bala)){
+                    bala.setMuerto(true);
+                    tanque1.impacto(bala.getTipo());
+                    tanque1.render(vida);
+                    if(tanque1.getHP()<=0){ganador.setGanador(2);}
+                    else{turno.sigTurno();}
+                }
             }
             
             //System.out.println(elapsedTime);
@@ -156,6 +274,8 @@ public class CINEBAT_PROY1 extends Application {
             sBala.clearRect(0, 0, 2000, 1000);
            
             bala.render(sBala, trayect);
+            
+            
             
             if(bala.getMuerto()){trayect.clearRect(0, 0, 2000, 1000);lastNanoTime.newValue(currentNanoTime);
                 root.getChildren().remove(TXT);
