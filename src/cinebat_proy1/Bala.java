@@ -24,6 +24,7 @@ public class Bala {
     private Circle bala;
     private double Ymax;
     private boolean moviendo;
+    private int tipo;
     
     
     public Bala(double x, double y, double A, double N){
@@ -34,6 +35,7 @@ public class Bala {
         muerto = false;
         moviendo = false;
         bala = new Circle(20, Color.ORANGE);
+        tipo = 1;
         
     }
     
@@ -73,11 +75,13 @@ public class Bala {
     
     //public void setYmax(double alpha, double fuerza, double Yi){Ymax = (Yi+(Math.pow(fuerza, 2)* Math.pow(Math.sin(alpha*Math.PI/180.0), 2.0) /20.0 ))/15.0;}
     
-    public double getYmax(){return Ymax;}
+    //public double getYmax(){return Ymax;}
     public double getX(){return posicionX;}
     public double getY(){return posicionY;}
     public void actualizar(double nuevoX, double nuevoY, double A, double N){posicionX= nuevoX; posicionY = nuevoY; if(A<90&&A>=0){alpha = A;}else{alpha = 90;}; fuerza = N;moviendo = true;}
     
+    public void setTipo(int t){tipo = t;}
+    public int getTipo(){return tipo;}
     
     public Rectangle2D getBoundary(){return new Rectangle2D(posicionX,posicionY, 10, 10);}
     public void setMuerto(boolean estado){muerto = estado;}
