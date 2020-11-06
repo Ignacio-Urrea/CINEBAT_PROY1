@@ -4,107 +4,156 @@
  * and open the template in the editor.
  */
 package cinebat_proy1;
+
 import java.util.Random;
-import javafx.application.Application;
-import static javafx.application.Application.launch;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-//import javafx.scene.shape.ArcType;
-import java.util.concurrent.TimeUnit;
-import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
-//a
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Polygon;
+import javafx.scene.text.Text;
 
 /**
  *
  * @author sfmnl
  */
 public class Tanque {
-    private double tanque1X; private double tanque1Y;
-    private double tanque2X; private double tanque2Y;
-    private int T1; private int T2; //indices en X[] , Y[]
-    private boolean gameOver; private int ganador;
+    private Polygon base;
+    private Polygon torre;
+    private Polygon canon;
+    private double posicionX;
+    private double posicionY;
+    private int equipo;
+    private int hp;
     
+    public Tanque(double x, double y, int jugador){
+        posicionX = x;
+        posicionY = y;
+        equipo = jugador;
+        hp = 100;
+        
+    }
     
-    public Tanque(){gameOver = false;}
+    public void render(Group root){
+        if (equipo == 1){
+            base = new Polygon();
+            base.getPoints().addAll(new Double[] {
+                posicionX-30.0, posicionY+15.0,
+                posicionX+35.0, posicionY+15.0,
+                posicionX+50.0, posicionY,
+                posicionX+40.0, posicionY-20.0,
+                posicionX-35.0, posicionY-20.0,
+                posicionX-40.0, posicionY,
+            });
+            torre = new Polygon();
+            torre.getPoints().addAll(new Double[]{
+                posicionX+30, posicionY-20,
+                posicionX+30, posicionY-30,
+                posicionX+20, posicionY-40,
+                posicionX-28, posicionY-35,
+                posicionX-28, posicionY-20,
+            });
+            canon = new Polygon();
+            canon.getPoints().addAll(new Double[]{
+                posicionX+20, posicionY-35,
+                posicionX+20, posicionY-40,
+                posicionX+70, posicionY-55,
+                posicionX+66, posicionY-45,
+            });
+            base.setFill(Color.INDIANRED);
+            torre.setFill(Color.SALMON);
+            canon.setFill(Color.TOMATO);
+            
+            
+        }
+        if (equipo == 2){
+            base = new Polygon();
+            base.getPoints().addAll(new Double[] {
+                
+                posicionX+30, posicionY+15,
+                posicionX-35, posicionY+15,
+                posicionX-50, posicionY,
+                posicionX-40, posicionY-20,
+                posicionX+35, posicionY-20,
+                posicionX+40, posicionY,
+                
+                
+            });
+            torre = new Polygon();
+            torre.getPoints().addAll(new Double[]{
+                posicionX-30, posicionY-20,
+                posicionX-30, posicionY-30,
+                posicionX-20, posicionY-40,
+                posicionX+28, posicionY-35,
+                posicionX+28, posicionY-20,
+            
+            });
+            canon = new Polygon();
+            canon.getPoints().addAll(new Double[]{
+                posicionX-20, posicionY-35,
+                posicionX-20, posicionY-40,
+                posicionX-70, posicionY-55,
+                posicionX-66, posicionY-45,
+            });
+            base.setFill(Color.FORESTGREEN);
+            torre.setFill(Color.LIMEGREEN);
+            canon.setFill(Color.MEDIUMSEAGREEN);
+            
+        }
+        root.getChildren().addAll(base, torre, canon);
+    }
     
-    public void setTanque(int tanque, double[] X, double[] Y){
+    public Rectangle2D getBoundary(){
+        Rectangle2D cuerpa;
+        if (equipo == 1){
+            cuerpa = new Rectangle2D(posicionX-60, posicionY-50, 80, 60);}
+        else if (equipo==2){
+            cuerpa = new Rectangle2D(posicionX-60, posicionY-50, 80, 60);}
+        else {cuerpa = new Rectangle2D(1,1,1,1);}
+        
+        return cuerpa;
+    }
+    
+    public void randomPos(double X[], double Y[]){
         Random r = new Random();
-        int x = 2+r.nextInt(195); // de 2 a 197 para que quepa el tanque
+        int random; // de 2 a 197 para que quepa el tanque
         
         
-        if(tanque==1){
-            while(X[x]>=700){x=2+r.nextInt(196);}
-            tanque1X = X[x]; tanque1Y = Y[x]-30;T1 = x;
+        if(equipo==1){
+            random=3+r.nextInt(72);
+            posicionX = X[random]; posicionY = Y[random]-30;
             
         }
-        else if (tanque==2){
+        else if (equipo==2){
             
-            while ((X[x]-X[T1])<1000 || X[x]<100){System.out.println(X[T1]);x=2+r.nextInt(195);}
-            tanque2X = X[x]; tanque2Y = Y[x]-30;T2 = x;
+            random=125+r.nextInt(65);
+            posicionX = X[random]; posicionY = Y[random]-30;
         }
     }
     
-    public void desplegar(GraphicsContext tanque1, GraphicsContext tanque2){
+    public int getEquipo(){return equipo;}
+    
+    public void impacto(int tipo){
+        if(tipo==1){hp-=50;}
+        else if(tipo==2){hp-=40;}
+        else{hp-=30;}
+    }
+    
+    public int getHP(){return hp;}
+    
+    public boolean intersects(Bala bala){//bala tiene que ser un Rectangle2D
+        return bala.getBoundary().intersects(this.getBoundary());
         
-        
-        double[] t1X = new double[6]; double[] t1Y = new double[6];
-        double[] t2X = new double[6]; double[] t2Y = new double[6];
-        //Base
-        t1X[0]=tanque1X-40;t1X[1]=tanque1X-35;t1X[2]=tanque1X+40;t1X[3]=tanque1X+50;t1X[4]=tanque1X+35;t1X[5]=tanque1X-30;
-        t1Y[0]=tanque1Y;t1Y[1]=tanque1Y-20;t1Y[2]=tanque1Y-20;t1Y[3]=tanque1Y;t1Y[4]=tanque1Y+15;t1Y[5]=tanque1Y+15;
-        
-        t2X[0]=tanque2X+40;t2X[1]=tanque2X+35;t2X[2]=tanque2X-40;t2X[3]=tanque2X-50;t2X[4]=tanque2X-35;t2X[5]=tanque2X+30;
-        t2Y[0]=tanque2Y;t2Y[1]=tanque2Y-20;t2Y[2]=tanque2Y-20;t2Y[3]=tanque2Y;t2Y[4]=tanque2Y+15;t2Y[5]=tanque2Y+15;
-        
-        tanque1.setFill(Color.INDIANRED);
-        tanque2.setFill(Color.FORESTGREEN);
-        
-        tanque1.fillPolygon(t1X, t1Y, 6);
-        tanque2.fillPolygon(t2X, t2Y, 6);
-        
-        //Torre
-        t1X[0]=tanque1X-28;t1X[1]=tanque1X+30;t1X[2]=tanque1X+30;t1X[3]=tanque1X+20;t1X[4]=tanque1X-28;t1X[5]=tanque1X-29;
-        t1Y[0]=tanque1Y-20;t1Y[1]=tanque1Y-20;t1Y[2]=tanque1Y-30;t1Y[3]=tanque1Y-40;t1Y[4]=tanque1Y-35;t1Y[5]=tanque1Y-26;
-        
-        t2X[0]=tanque2X+28;t2X[1]=tanque2X-30;t2X[2]=tanque2X-30;t2X[3]=tanque2X-20;t2X[4]=tanque2X+28;t2X[5]=tanque2X+29;
-        t2Y[0]=tanque2Y-20;t2Y[1]=tanque2Y-20;t2Y[2]=tanque2Y-30;t2Y[3]=tanque2Y-40;t2Y[4]=tanque2Y-35;t2Y[5]=tanque2Y-26;
-        
-        tanque1.setFill(Color.SALMON);
-        tanque1.fillPolygon(t1X, t1Y, 6);
-        
-        tanque2.setFill(Color.LIMEGREEN);
-        tanque2.fillPolygon(t2X, t2Y, 6);
-        
-        
-        t1X = new double[4]; t1Y = new double[4];
-        t2X = new double[4]; t2Y = new double[4];
-        
-        t1X[0] = tanque1X+28;t1X[1] = tanque1X+20; t1X[2] = tanque1X+70; t1X[3] = tanque1X+66;
-        t1Y[0] = tanque1Y-28;t1Y[1] = tanque1Y-38; t1Y[2] = tanque1Y-55; t1Y[3] = tanque1Y-45;
-        
-        t2X[0] = tanque2X-28;t2X[1] = tanque2X-20; t2X[2] = tanque2X-70; t2X[3] = tanque2X-66;
-        t2Y[0] = tanque2Y-28;t2Y[1] = tanque2Y-38; t2Y[2] = tanque2Y-55; t2Y[3] = tanque2Y-45;
-        
-        tanque1.setFill(Color.TOMATO);
-        tanque2.setFill(Color.MEDIUMSEAGREEN);
-        
-        tanque1.fillPolygon(t1X, t1Y, 4);
-        tanque2.fillPolygon(t2X, t2Y, 4);
+    } 
+    
+    public void render(GraphicsContext gc){
+        gc.clearRect(0, 0, 2000, 1000);
+        gc.fillText(hp+"%", posicionX, posicionY-100);
         
     }
     
-    public double getT1X(){return tanque1X;}
-    public double getT2X(){return tanque2X;}
+    public double getX(){return posicionX;}
+    public double getY(){return posicionY;}
     
-    public double getT1Y(){return tanque1Y;}
-    public double getT2Y(){return tanque2Y;}
-    
-    public void ganador(int gana){ganador = gana; gameOver = true;}
-    
-    public boolean getEstado(){return gameOver;}
-    public int getGanador() {return ganador;}
 }
