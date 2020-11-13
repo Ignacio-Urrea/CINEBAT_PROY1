@@ -15,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
@@ -27,10 +28,6 @@ import javafx.stage.Stage;
  * @author sfmnl
  */
 public class CINEBAT_PROY1 extends Application {
-    
-    void cleanup(){
-        
-    }
     
     @Override
     public void start(Stage theStage) 
@@ -66,9 +63,22 @@ public class CINEBAT_PROY1 extends Application {
     capa3.toFront();
     capa2.toFront();
     
-    
     Mapa mapa = new Mapa();
-    mapa.genMapa(gc);
+    
+    int numMapa = 1+(int)(Math.random()*3);
+    
+    switch (numMapa){
+        case 1:
+            mapa.genMapa(gc);
+            break;
+        case 2:
+            mapa.genMapa2(gc);
+            break;
+        case 3:
+            mapa.genMapa3(gc);
+            break;
+    }
+    
     
     Bala bala = new Bala(0, 0, 0, 0);
     
@@ -84,22 +94,31 @@ public class CINEBAT_PROY1 extends Application {
     
     
     TextField angulo1 = new TextField();
-    Alerta.integerTextField(angulo1);
     TextField angulo2 = new TextField();
-    Alerta.integerTextField(angulo2);
         
     double alpha1 = 0;double alpha2;
     double N1 = 0; double N2;
         
     TextField fuerza1 = new TextField();
-    Alerta.integerTextField(fuerza1);
     TextField fuerza2 = new TextField();
-    Alerta.integerTextField(fuerza2);
     
     Button disparar1 = new Button("(J1) Disparar");
     Button disparar2 = new Button("(J2) Disparar");
+    
     Button reset = new Button("Nueva partida");
-    Button finalizar = new Button("Finalizar juego");
+    Button finalizar = new Button("Finalizar juego");      
+    reset.relocate(900, 920);
+    finalizar.relocate(899, 960);     
+    
+    
+    reset.setOnAction((ActionEvent event) -> {
+        restart(theStage);
+        
+        canvas.setVisible(false);
+        
+        canvas.setVisible(true);
+        
+    });
     
     MenuItem p105 = new MenuItem("105mm");
     
@@ -140,8 +159,11 @@ public class CINEBAT_PROY1 extends Application {
     MenuButton proyectil1 = new MenuButton("Tipo de Proyectil", null, p105, pPerf, p60);
     MenuButton proyectil2 = new MenuButton("Tipo de Proyectil", null, p105b, pPerfb, p60b);
     
-    proyectil1.relocate(40, 150);
-    proyectil2.relocate(1590, 150);
+    proyectil1.relocate(30, 150);
+    proyectil2.relocate(1550, 150);
+    
+    
+    
     
     
     //Texto en gris
@@ -151,35 +173,57 @@ public class CINEBAT_PROY1 extends Application {
     Text FUERZA1 = new Text();
     Text FUERZA2 = new Text();
     
-    ANGULO1.setText("Angulo (0-90): ");
-    ANGULO2.setText("Angulo (0-90): ");
-    FUERZA1.setText("Fuerza (0-300): ");
-    FUERZA2.setText("Fuerza (0-300): ");
+    ANGULO1.setText("Angulo: ");
+    ANGULO2.setText("Angulo: ");
+    FUERZA1.setText("Fuerza: ");
+    FUERZA2.setText("Fuerza: ");
     
-    angulo1.relocate(140, 50);
-    fuerza1.relocate(140, 100);
-    disparar1.relocate(200, 150);
-    ANGULO1.setX(40);
-    FUERZA1.setX(40);
+    
+    angulo1.setPromptText("0-90");
+    fuerza1.setPromptText("0-300");
+    angulo2.setPromptText("0-90");
+    fuerza2.setPromptText("0-300");
+    
+    angulo1.relocate(130, 50);
+    fuerza1.relocate(130, 100);
+    disparar1.relocate(215, 150);
+    ANGULO1.setX(30);
+    FUERZA1.setX(30);
     ANGULO1.setY(70);
     FUERZA1.setY(120);
     
     
-    angulo2.relocate(1690, 50);
-    fuerza2.relocate(1690, 100);
-    disparar2.relocate(1750, 150);
-    ANGULO2.setX(1590);
-    FUERZA2.setX(1590);
+    angulo2.relocate(1650, 50);
+    fuerza2.relocate(1650, 100);
+    disparar2.relocate(1735, 150);
+    ANGULO2.setX(1550);
+    FUERZA2.setX(1550);
     ANGULO2.setY(70);
     FUERZA2.setY(120);
     
-    reset.relocate(900, 920);
-    finalizar.relocate(899, 960);
+    
+    ANGULO1.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 25));
+    ANGULO1.setFill(Color.SNOW);
+    ANGULO1.setStrokeWidth(1); 
+    ANGULO1.setStroke(Color.BLACK);
+    ANGULO2.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 25));
+    ANGULO2.setFill(Color.SNOW);
+    ANGULO2.setStrokeWidth(1); 
+    ANGULO2.setStroke(Color.BLACK);
+    
+    FUERZA1.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 25));
+    FUERZA1.setFill(Color.SNOW);
+    FUERZA1.setStrokeWidth(1); 
+    FUERZA1.setStroke(Color.BLACK);
+    FUERZA2.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 25));
+    FUERZA2.setFill(Color.SNOW);
+    FUERZA2.setStrokeWidth(1); 
+    FUERZA2.setStroke(Color.BLACK);
+    
+    
     
     disparar1.setOnAction(e -> disparo(angulo1, fuerza1, turno, tanque1, bala) );
     disparar2.setOnAction(e -> disparo(angulo2, fuerza2, turno, tanque2, bala) );
-    
-    reset.setOnAction(e -> restart(theStage));
     
     root.getChildren().addAll(reset, finalizar, angulo1, fuerza1, disparar1, angulo2,fuerza2,disparar2,ANGULO1,ANGULO2,FUERZA1,FUERZA2,proyectil2, proyectil1);
     
@@ -193,11 +237,15 @@ public class CINEBAT_PROY1 extends Application {
     tanque1.render(vida);
     tanque2.render(vida2);
     
+    TXT.setStrokeWidth(2); 
+    TXT.setStroke(Color.SNOW);   
+      
+    
     
     Ganador ganador = new Ganador();
     final Bounds limites = root.getBoundsInLocal();
     final LongValue lastNanoTime = new LongValue(System.nanoTime());
-    //final long startNanoTime = System.nanoTime();
+    
  
     new AnimationTimer()
     {
@@ -237,7 +285,11 @@ public class CINEBAT_PROY1 extends Application {
             //double y = 232 + 128 * Math.sin(elapsedTime); //Encargarse de que tiempo= 0 antes de cada disparo
             //bala.update(1000-30,500-25,elapsedTime, 75, 20, tanque2, root); //Xi, Yi, tiempo, Angulo, Fuerza, De donde se dispara, la root
             
-               
+            
+            
+            
+                    
+                    
            
             if (bala.getX()>=limites.getMaxX()){bala.setMuerto(true);turno.sigTurno();}
             if (bala.getY()>=limites.getMaxY()){bala.setMuerto(true);turno.sigTurno();}
@@ -260,17 +312,23 @@ public class CINEBAT_PROY1 extends Application {
             }
        
         
-        }  
+        }
+        
     
     }.start();
  
     theStage.show();
 }
     
+    void cleanup(){
+        
+    } 
+    
     void restart(Stage theStage){
         cleanup();
         start(theStage);
     }
+    
     
     private void disparo(TextField A, TextField N, Turno turno, Tanque tanque, Bala bala){
         double angulo = Double.parseDouble(A.getText());
@@ -286,3 +344,4 @@ public class CINEBAT_PROY1 extends Application {
     }
     
 }
+
