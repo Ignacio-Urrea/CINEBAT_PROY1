@@ -121,14 +121,17 @@ public class Tanque {
         
         
         if(equipo==1){
-            random=3+r.nextInt(72);
-            posicionX = X[random]; posicionY = Y[random]-30;
+            random=5+r.nextInt(45);
+            while(Y[random+7]<Y[random]){random=5+r.nextInt(45);}
+            posicionX = X[random]; posicionY = Y[random]-20;
             
         }
         else if (equipo==2){
             
-            random=125+r.nextInt(65);
-            posicionX = X[random]; posicionY = Y[random]-30;
+            random=145+r.nextInt(50);
+            while(Y[random-7]<Y[random]){random=125+r.nextInt(65);}
+            posicionX = X[random]; posicionY = Y[random]-20;
+            
         }
     }
     
@@ -150,7 +153,6 @@ public class Tanque {
     public void render(GraphicsContext gc){
         gc.clearRect(0, 0, 2000, 1000);
         gc.fillText(hp+"%", posicionX, posicionY-100);
-        
     }
     
     public double getX(){return posicionX;}

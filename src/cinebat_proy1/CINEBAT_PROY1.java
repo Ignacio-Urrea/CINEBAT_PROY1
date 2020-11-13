@@ -20,6 +20,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
@@ -69,7 +70,21 @@ public class CINEBAT_PROY1 extends Application {
     
     
     Mapa mapa = new Mapa();
-    mapa.genMapa(gc);
+    
+    int numMapa = 1+(int)(Math.random()*3);
+    
+    switch (numMapa){
+        case 1:
+            mapa.genMapa(gc);
+            break;
+        case 2:
+            mapa.genMapa2(gc);
+            break;
+        case 3:
+            mapa.genMapa3(gc);
+            break;
+    }
+    
     
     Bala bala = new Bala(0, 0, 0, 0);
     
@@ -155,8 +170,8 @@ public class CINEBAT_PROY1 extends Application {
     MenuButton proyectil1 = new MenuButton("Tipo de Proyectil", null, p105, pPerf, p60);
     MenuButton proyectil2 = new MenuButton("Tipo de Proyectil", null, p105b, pPerfb, p60b);
     
-    proyectil1.relocate(40, 150);
-    proyectil2.relocate(1590, 150);
+    proyectil1.relocate(30, 150);
+    proyectil2.relocate(1550, 150);
     
     
     
@@ -180,22 +195,41 @@ public class CINEBAT_PROY1 extends Application {
     angulo2.setPromptText("0-90");
     fuerza2.setPromptText("0-300");
     
-    angulo1.relocate(100, 50);
-    fuerza1.relocate(100, 100);
-    disparar1.relocate(200, 150);
-    ANGULO1.setX(40);
-    FUERZA1.setX(40);
+    angulo1.relocate(130, 50);
+    fuerza1.relocate(130, 100);
+    disparar1.relocate(215, 150);
+    ANGULO1.setX(30);
+    FUERZA1.setX(30);
     ANGULO1.setY(70);
     FUERZA1.setY(120);
     
     
     angulo2.relocate(1650, 50);
     fuerza2.relocate(1650, 100);
-    disparar2.relocate(1750, 150);
-    ANGULO2.setX(1590);
-    FUERZA2.setX(1590);
+    disparar2.relocate(1735, 150);
+    ANGULO2.setX(1550);
+    FUERZA2.setX(1550);
     ANGULO2.setY(70);
     FUERZA2.setY(120);
+    
+    
+    ANGULO1.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 25));
+    ANGULO1.setFill(Color.SNOW);
+    ANGULO1.setStrokeWidth(1); 
+    ANGULO1.setStroke(Color.BLACK);
+    ANGULO2.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 25));
+    ANGULO2.setFill(Color.SNOW);
+    ANGULO2.setStrokeWidth(1); 
+    ANGULO2.setStroke(Color.BLACK);
+    
+    FUERZA1.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 25));
+    FUERZA1.setFill(Color.SNOW);
+    FUERZA1.setStrokeWidth(1); 
+    FUERZA1.setStroke(Color.BLACK);
+    FUERZA2.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 25));
+    FUERZA2.setFill(Color.SNOW);
+    FUERZA2.setStrokeWidth(1); 
+    FUERZA2.setStroke(Color.BLACK);
     
     
     
@@ -214,11 +248,15 @@ public class CINEBAT_PROY1 extends Application {
     tanque1.render(vida);
     tanque2.render(vida2);
     
+    TXT.setStrokeWidth(2); 
+    TXT.setStroke(Color.SNOW);   
+      
+    
     
     Ganador ganador = new Ganador();
     final Bounds limites = root.getBoundsInLocal();
     final LongValue lastNanoTime = new LongValue(System.nanoTime());
-    //final long startNanoTime = System.nanoTime();
+    
  
     new AnimationTimer()
     {
