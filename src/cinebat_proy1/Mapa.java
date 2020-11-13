@@ -29,7 +29,7 @@ public class Mapa {
         gc.setLineWidth(50);
         double x = 0;
         double xfalso = Math.random() * 10000;
-        double y = onda(xfalso)*666 +800;
+        double y = onda(xfalso)*350 +800;// onda(xfalso)*666 + 800
         double x2;
         double y2;
         
@@ -49,7 +49,7 @@ public class Mapa {
         while (x<2000){
             x2 = x+10;
             xfalso = xfalso+10;
-            y2 = (onda(xfalso)*666)+800 + (Math.random() * (8 + 4 + 1) -4);
+            y2 = (onda(xfalso)*350)+800 + (Math.random() * (8 + 4 + 1) -4);
             gc.strokeLine(x, y, x2, y2);
             
             X[puntos] = x;
@@ -91,47 +91,357 @@ public class Mapa {
         //return gc;
     }
     
-    public void actMapa(GraphicsContext gc){
-        gc.setStroke(Color.LIMEGREEN);
+    public void genMapa2(GraphicsContext gc){
+        gc.setStroke(Color.SNOW);
         gc.setFill(Color.CHOCOLATE);
         gc.setLineWidth(50);
         
-        double mapaX2[] = new double[203];
-        double mapaY2[] = new double[203];
-        double mapaX[] = new double[203];
-        double mapaY[] = new double[203];
+        int terreno = vom();
         
-        for (int i= 0; i<200; i++){
+        double x = 0;
+        double y;
+        double x2;
+        double y2;
+        
+        double yMeta;
+        
+        double mapaX2[];
+        double mapaY2[];
+        double mapaX[];
+        double mapaY[];
+        
+        
+        mapaX = new double[203];
+        mapaY = new double[203];
+        mapaX2 = new double[203];
+        mapaY2 = new double[203];
+        
+        int puntos = 0;
+        int iter;
+        
+        if (terreno==1){y = valle();yMeta = montana();terreno=2;}
+        else{y = montana();yMeta = valle();terreno=1;}
+        
+        
+        while (x<2000){
             
-            if (i==199){gc.strokeLine(X[i], Y[i], X[i]+10, Y[i]);}
-            else{gc.strokeLine(X[i], Y[i], X[i+1], Y[i+1]);}
-            mapaX[i] = X[i];mapaX2[i] = X[i];
-            mapaY[i] = Y[i]+20;mapaY2[i] = Y[i]-20;
+            iter = 0;
+            
+            if(terreno==1){
+                while(y<yMeta && x<2000 && iter<40){    
+
+                    X[puntos] = x;
+                    Y[puntos] = y;
+                    x2 = x+10;
+                    y2 = acercar(y, yMeta, iter);
+                    gc.strokeLine(x, y, x2, y2);
+
+                  
+                    mapaX[puntos]=x;
+                    mapaY[puntos] = y+20;
+                    mapaX2[puntos]=x;
+                    mapaY2[puntos]=y-20;
+
+                    puntos++;
+                    iter++;
+
+                    x = x2;
+                    y=y2;
+
+
+                }
+            }
+            else{
+                while(y>yMeta && x<2000 && iter<40){    
+
+                    X[puntos] = x;
+                    Y[puntos] = y;
+                    x2 = x+10;
+                    y2 = acercar(y, yMeta, iter);
+                    gc.strokeLine(x, y, x2, y2);
+
+                  
+                    mapaX[puntos]=x;
+                    mapaY[puntos] = y+20;
+                    mapaX2[puntos]=x;
+                    mapaY2[puntos]=y-20;
+
+                    puntos++;
+                    iter++;
+
+                    x = x2;
+                    y=y2;
+
+
+                }
+            }
+            if (terreno==1){yMeta = montana();terreno=2;}
+            else{yMeta = valle();terreno=1;}
+            
         }
         
-         mapaX2[200] = 2000;
-        mapaY2[200] = 0;
-        mapaX2[201] = 0;
-        mapaY2[201]=0;
-        mapaX2[202] = mapaX2[0];
-        mapaY2[202] = mapaY2[0];
+        mapaX2[puntos] = 2000;
+        mapaY2[puntos] = 0;
+        mapaX2[puntos+1] = 0;
+        mapaY2[puntos+1]=0;
+        mapaX2[puntos+2] = mapaX2[0];
+        mapaY2[puntos+2] = mapaY2[0];
         
                 
-        mapaX[200] = 2000;
-        mapaY[200]= 1000;
-        mapaX[201]=0;
-        mapaY[201]=1000;
-        mapaX[202]=mapaX[0];
-        mapaY[202]=mapaY[0];
-        gc.fillPolygon(mapaX, mapaY, 202);
+        mapaX[puntos] = 2000;
+        mapaY[puntos]= 1000;
+        mapaX[puntos+1]=0;
+        mapaY[puntos+1]=1000;
+        mapaX[puntos+2]=mapaX[0];
+        mapaY[puntos+2]=mapaY[0];
+        gc.fillPolygon(mapaX, mapaY, puntos+3);
         
-        gc.setFill(Color.BLUE);
-        gc.fillPolygon(mapaX2, mapaY2, 202);
+        gc.setFill(Color.CORNFLOWERBLUE);
+        gc.fillPolygon(mapaX2, mapaY2, puntos+3);
+        
     }
+    
+    public void genMapa3(GraphicsContext gc){
+        
+        gc.setStroke(Color.BLACK);
+        gc.setFill(Color.CHOCOLATE);
+        
+        
+        int terreno = vom();
+        
+        double x = 0;
+        double y;
+        double x2;
+        double y2;
+        
+        double yMeta;
+        
+        double mapaX2[];
+        double mapaY2[];
+        
+        
+        
+        
+        mapaX2 = new double[403];
+        mapaY2 = new double[403];
+        
+        int puntos = 0;
+        int puntos2 = 0;
+        int iter;
+        int arcoiris=1;
+        
+        if (terreno==1){y = valle2();yMeta = montana2();terreno=2;}
+        else{y = montana2();yMeta = valle2();terreno=1;}
+        
+        
+        while (x<2000){
+            
+            iter = 0;
+            
+            if(terreno==1){
+                while(y!=yMeta && x<2000 && iter<40){    
+                    
+                    switch(arcoiris){
+                        case 1:
+                            gc.setFill(Color.VIOLET);
+                            arcoiris = 2;
+                            break;
+                        case 2:
+                            gc.setFill(Color.INDIGO);
+                            arcoiris = 3;
+                            break;
+                        case 3:
+                            gc.setFill(Color.MEDIUMBLUE);
+                            arcoiris = 4;
+                            break;
+                        case 4:
+                            gc.setFill(Color.SPRINGGREEN);
+                            arcoiris = 5;
+                            break;
+                        case 5:
+                            gc.setFill(Color.YELLOW);
+                            arcoiris = 6;
+                            break;
+                        case 6:
+                            gc.setFill(Color.ORANGE);
+                            arcoiris = 7;
+                            break;
+                        case 7:
+                            gc.setFill(Color.RED);
+                            arcoiris = 1;
+                            break;
+                    }
+                    
+                    X[puntos] = x;
+                    Y[puntos] = y;
+                    x2 = x+10;
+                    y2 = acercar2(y, yMeta, iter);
+                    gc.fillRoundRect(x, y, 10, 1000-y,5,5);
+
+            
+                    
+                    mapaX2[puntos2]=x;
+                    mapaX2[puntos2+1]=x2;
+                    mapaY2[puntos2]=y;
+                    mapaY2[puntos2+1]=y;
+
+                    puntos++;
+                    puntos2+=2;
+                    iter++;
+
+                    x = x2;
+                    y=y2;
+
+
+                }
+            }
+            else{
+                while(y!=yMeta && x<2000 && iter<40){    
+                    
+                    switch(arcoiris){
+                        case 1:
+                            gc.setFill(Color.VIOLET);
+                            arcoiris = 2;
+                            break;
+                        case 2:
+                            gc.setFill(Color.INDIGO);
+                            arcoiris = 3;
+                            break;
+                        case 3:
+                            gc.setFill(Color.MEDIUMBLUE);
+                            arcoiris = 4;
+                            break;
+                        case 4:
+                            gc.setFill(Color.SPRINGGREEN);
+                            arcoiris = 5;
+                            break;
+                        case 5:
+                            gc.setFill(Color.YELLOW);
+                            arcoiris = 6;
+                            break;
+                        case 6:
+                            gc.setFill(Color.ORANGE);
+                            arcoiris = 7;
+                            break;
+                        case 7:
+                            gc.setFill(Color.RED);
+                            arcoiris = 1;
+                            break;
+                    }
+                    
+                    X[puntos] = x;
+                    Y[puntos] = y;
+                    x2 = x+10;
+                    y2 = acercar2(y, yMeta, iter);
+                    gc.fillRoundRect(x, y, 10, 1000-y,5,5);
+
+                 
+                   
+                    mapaX2[puntos2]=x;
+                    mapaX2[puntos2+1]=x2;
+                    mapaY2[puntos2]=y;
+                    mapaY2[puntos2+1]=y;
+
+                    puntos++;
+                    puntos2+=2;
+                    iter++;
+
+                    x = x2;
+                    y=y2;
+
+
+                }
+            }
+            if (terreno==1){yMeta = montana2();terreno=2;}
+            else{yMeta = valle2();terreno=1;}
+            
+        }
+        
+        mapaX2[400] = 2000;
+        mapaY2[400] = 0;
+        mapaX2[401] = 0;
+        mapaY2[401]=0;
+        mapaX2[402] = mapaX2[0];
+        mapaY2[402] = mapaY2[0];
+        
+        
+        gc.setFill(Color.CORNFLOWERBLUE);
+        gc.fillPolygon(mapaX2, mapaY2, puntos2+3);
+        
+    } 
     
     private static double onda(double x){
         double y;
-        y = Math.cos(7*3.14*1250)*Math.sin(2*3.14*(1)/(1250)*x);
+        y = Math.cos(7*3.14*667)*Math.sin(2*3.14*(1)/(667)*x);//1250 Math.cos(7*3.14*901)*Math.sin(2*3.14*(1)/(901)*x)
         return y;
+    }
+    
+    
+    private double valle2(){
+        
+        double y = 850 + Math.random() * ((950-850)+1); // min y max basados en 1000, que es la altura máxima del mapa
+        return y;
+    }
+    
+    private double montana2(){
+        double y = 650 + Math.random() * ((750-650)+1);
+        return y;
+    }
+    
+    //entrega un número que acerca al y actual al punto yObjetivo en base a números aleatorios
+    private double acercar2(double yActual, double yObjetivo, double iter){
+        double y2;
+        if(yObjetivo>=850){
+            if (iter<10){y2 = 1 + Math.random()*((10-1)+1) ;}
+            else if(iter>10 && iter<30){y2 = 5 + Math.random()*((20-5)+1);}
+            else {y2 = 10 + Math.random()*((25-10)+1);}
+            if ((yActual+y2)>yObjetivo){y2 = yObjetivo-yActual;}
+        }
+        
+        else{
+            if (iter<10){y2 = -(1 + Math.random()*((10-1)+1)) ;}
+            else if(iter>10 && iter<30){y2 = -(5 + Math.random()*((20-5)+1));}
+            else {y2 = -(10 + Math.random()*((25-10)+1));}
+            if ((yActual+y2)<yObjetivo){y2 = -(yActual-yObjetivo);}
+        }
+        y2+=yActual;
+        return y2;
+    }
+    
+    
+    private double valle(){
+        
+        double y = 660 + Math.random() * ((950-660)+1); // min y max basados en 1000, que es la altura máxima del mapa
+        return y;
+    }
+    
+    private double montana(){
+        double y = 450 + Math.random() * ((600-400)+1);
+        return y;
+    }
+    
+    //entrega un número que acerca al y actual al punto yObjetivo en base a números aleatorios
+    private double acercar(double yActual, double yObjetivo, double iter){
+        double y2;
+        if(yObjetivo>=660){
+            if (iter<10){y2 = 1 + Math.random()*((10-1)+1) ;}
+            else if(iter>10 && iter<30){y2 = 5 + Math.random()*((20-5)+1);}
+            else {y2 = 10 + Math.random()*((25-10)+1);}
+            if ((yActual+y2)>yObjetivo){y2 = yObjetivo-yActual;}
+        }
+        
+        else{
+            if (iter<10){y2 = -(1 + Math.random()*((10-1)+1)) ;}
+            else if(iter>10 && iter<30){y2 = -(5 + Math.random()*((20-5)+1));}
+            else {y2 = -(10 + Math.random()*((25-10)+1));}
+            if ((yActual+y2)<yObjetivo){y2 = -(yActual-yObjetivo);}
+        }
+        y2+=yActual;
+        return y2;
+    }
+    //escoge un punto inicial valle o montaña
+    private int vom(){
+        int punto = 1+(int)(Math.random()*((2-1)+1));
+        return punto;
     }
 }

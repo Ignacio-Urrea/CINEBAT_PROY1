@@ -61,14 +61,14 @@ public class Bala {
     public void render(GraphicsContext gc, GraphicsContext gc2){
         if (!muerto){
             gc.setFill(Color.ORANGE);
-            gc.fillOval(posicionX, posicionY, 15, 15);
+            gc.fillOval(posicionX, posicionY-2, 15, 15);
             /*if(posicionY<= Ymax+8 && posicionY>=Ymax-8){
                 gc2.setFill(Color.RED);
             }
             
             else{gc2.setFill(Color.BLACK);}*/
-            gc2.setFill(Color.BLACK);
-            gc2.fillOval(posicionX, posicionY, 15, 15);
+            gc2.setFill(Color.SNOW);
+            gc2.fillOval(posicionX, posicionY, 10, 10);
         }
     }
     //public double getY(){return posicionY;}
