@@ -9,6 +9,7 @@ package cinebat_proy1;
  *
  * @author sfmnl
  */
+//Simplemente permite guardar y actualizar el valor del tiempo actual dentro de la animacion
 public class LongValue {
     private long value;
     

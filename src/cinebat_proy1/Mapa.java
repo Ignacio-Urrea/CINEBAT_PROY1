@@ -15,25 +15,25 @@ import javafx.scene.paint.Color;
  * @author sfmnl
  */
 public class Mapa {
-    private double X[];
+    private double X[];//Almacena coordenadas del terreno en chunks de a 10 pixeles
     private double Y[];
     
     public Mapa(){ X = new double[200];Y = new double[200];}
     
     public double[] getX() {return X;}
     public double[] getY() {return Y;}
-    
+    //Genera el tipo de mapa 1 (Cerros)
     public void genMapa(GraphicsContext gc) {
         gc.setStroke(Color.LIMEGREEN);
         gc.setFill(Color.CHOCOLATE);
         gc.setLineWidth(50);
         double x = 0;
-        double xfalso = Math.random() * 10000;
-        double y = onda(xfalso)*350 +800;// onda(xfalso)*666 + 800
+        double xfalso = Math.random() * 10000; //Para que el tren de ondas no sea siempre igual
+        double y = onda(xfalso)*350 +800;//+800 para que no suba de la mitad de la pantalla
         double x2;
         double y2;
         
-        double mapaX2[];
+        double mapaX2[];//Necesarios para colorear el mapa
         double mapaY2[];
         double mapaX[];
         double mapaY[];
@@ -45,7 +45,7 @@ public class Mapa {
         mapaY2 = new double[203];
         
         int puntos = 0;
-        
+        //Va generando el mapa en chunks de 10 px hasta llegar al límite derecho (2000 por ahora)
         while (x<2000){
             x2 = x+10;
             xfalso = xfalso+10;
@@ -90,7 +90,7 @@ public class Mapa {
         gc.fillPolygon(mapaX2, mapaY2, puntos+3);
         //return gc;
     }
-    
+    //Genera el mapa de tipo 2 (Montañas)
     public void genMapa2(GraphicsContext gc){
         gc.setStroke(Color.SNOW);
         gc.setFill(Color.CHOCOLATE);
@@ -122,7 +122,8 @@ public class Mapa {
         if (terreno==1){y = valle();yMeta = montana();terreno=2;}
         else{y = montana();yMeta = valle();terreno=1;}
         
-        
+        //Sintaxis general, pero en vez de tren de ondas crea un camino irregular
+        //Desde un punto inicial a un punto objetivo (montes y valles)
         while (x<2000){
             
             iter = 0;
@@ -200,7 +201,7 @@ public class Mapa {
         gc.fillPolygon(mapaX2, mapaY2, puntos+3);
         
     }
-    
+    //Genera mapa tipo 3 (Arcoiris), se asemeja al anterior pero es más bajo y con montañas menos empinadas
     public void genMapa3(GraphicsContext gc){
         
         gc.setStroke(Color.BLACK);
@@ -369,20 +370,20 @@ public class Mapa {
         gc.fillPolygon(mapaX2, mapaY2, puntos2+3);
         
     } 
-    
+    //Ecuación de un tren de ondas con valores arbitrarios
     private static double onda(double x){
         double y;
         y = Math.cos(7*3.14*667)*Math.sin(2*3.14*(1)/(667)*x);//1250 Math.cos(7*3.14*901)*Math.sin(2*3.14*(1)/(901)*x)
         return y;
     }
     
-    
+    //Genera un punto que representa un valle, congruente con la sintaxis del mapa 2
     private double valle2(){
         
         double y = 850 + Math.random() * ((950-850)+1); // min y max basados en 1000, que es la altura máxima del mapa
         return y;
     }
-    
+    //Genera un punto que representa una montaña, congruente con la sintaxis del mapa 2
     private double montana2(){
         double y = 650 + Math.random() * ((750-650)+1);
         return y;
@@ -408,13 +409,13 @@ public class Mapa {
         return y2;
     }
     
-    
+    //Genera un punto que representa un valle, congruente con la sintaxis del mapa 1
     private double valle(){
         
         double y = 660 + Math.random() * ((950-660)+1); // min y max basados en 1000, que es la altura máxima del mapa
         return y;
     }
-    
+    //Genera un punto que representa una montaña, congruente con la sintaxis del mapa 1
     private double montana(){
         double y = 450 + Math.random() * ((600-400)+1);
         return y;

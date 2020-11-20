@@ -9,6 +9,7 @@ import java.util.Random;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.MenuItem;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
@@ -19,22 +20,30 @@ import javafx.scene.text.Text;
  * @author sfmnl
  */
 public class Tanque {
-    private Polygon base;
-    private Polygon torre;
-    private Polygon canon;
-    private double posicionX;
-    private double posicionY;
-    private int equipo;
-    private int hp;
+    private Polygon base;//Imagen de la base del tanque
+    private Polygon torre;//Imagen de la torre del tanque
+    private Polygon canon;//Imagen del cañón del tanque
+    private double posicionX;//Posiión en eje X del tanque "real"
+    private double posicionY;//Posición en eje Y del tanque "real"
+    private int equipo;//El equipo en el que se encuentra el tanque
+    private int hp;//La vida actual del tanque
+    private int tipoBala;//El tipo de bala que tiene cargada el tanque
+    private int tipo1;//La munición de cada tipo de bala
+    private int tipo2;
+    private int tipo3;
     
     public Tanque(double x, double y, int jugador){
         posicionX = x;
         posicionY = y;
         equipo = jugador;
         hp = 100;
+        tipoBala = 1;
+        tipo1 = 3;
+        tipo2 = 10;
+        tipo3 = 3;
         
     }
-    
+    //Se dibuja el tanque
     public void render(Group root){
         if (equipo == 1){
             base = new Polygon();
@@ -103,7 +112,7 @@ public class Tanque {
         }
         root.getChildren().addAll(base, torre, canon);
     }
-    
+    //Se posiciona el modelo real del tanque (rectángulo)
     public Rectangle2D getBoundary(){
         Rectangle2D cuerpa;
         if (equipo == 1){
@@ -114,7 +123,7 @@ public class Tanque {
         
         return cuerpa;
     }
-    
+    //Se posiciona en lugar aleatorio el tanque
     public void randomPos(double X[], double Y[]){
         Random r = new Random();
         int random; // de 2 a 197 para que quepa el tanque
@@ -136,7 +145,7 @@ public class Tanque {
     }
     
     public int getEquipo(){return equipo;}
-    
+    //Recibe imacto de bala
     public void impacto(int tipo){
         if(tipo==1){hp-=50;}
         else if(tipo==2){hp-=40;}
@@ -144,12 +153,12 @@ public class Tanque {
     }
     
     public int getHP(){return hp;}
-    
+    //Comprueba si la bala impacta
     public boolean intersects(Bala bala){//bala tiene que ser un Rectangle2D
         return bala.getBoundary().intersects(this.getBoundary());
         
     } 
-    
+    //Actualiza la barra de vida
     public void render(GraphicsContext gc){
         gc.clearRect(0, 0, 2000, 1000);
         gc.fillText(hp+"%", posicionX, posicionY-100);
@@ -157,5 +166,46 @@ public class Tanque {
     
     public double getX(){return posicionX;}
     public double getY(){return posicionY;}
+    
+    public void setBala(int tipo){
+        tipoBala = tipo;
+    }
+    public void descontarBala(){
+        switch(tipoBala){
+            case 1:
+                tipo1--;
+                
+                break;
+            case 2:
+                tipo2--;
+                break;
+            case 3:
+                tipo3--;
+                break;
+        }
+    }
+    
+    public int getBala(){return tipoBala;}
+    public int getT1(){return tipo1;}
+    public int getT2(){return tipo2;}
+    public int getT3(){return tipo3;}
+    //Comprueba si el tanque tiene munición y cambia el tipo de munición en caso de estar agotado
+    public boolean vacio(){
+        return tipo1 <= 0 && tipo2<=0 && tipo3 <=0;
+    }
+    public void rotarBala(MenuItem p105boton, MenuItem perfBoton, MenuItem p60boton){
+        if (tipo1 <=0){
+            if (tipo2>0){tipoBala=2;p105boton.setText("105mm");perfBoton.setText("*Perforante");p60boton.setText("60mm");}
+            else if(tipo3>0){tipoBala=3;p105boton.setText("105mm");perfBoton.setText("Perforante");p60boton.setText("*60mm");}
+        }
+        if (tipo2 <=0){
+            if (tipo1>0){tipoBala=1;p105boton.setText("*105mm");perfBoton.setText("Perforante");p60boton.setText("60mm");}
+            else if(tipo3>0){tipoBala=3;p105boton.setText("105mm");perfBoton.setText("Perforante");p60boton.setText("*60mm");}
+        }
+        if (tipo3 <=0){
+            if (tipo1>0){tipoBala=1;p105boton.setText("*105mm");perfBoton.setText("Perforante");p60boton.setText("60mm");}
+            else if(tipo2>0){tipoBala=2;p105boton.setText("105mm");perfBoton.setText("*Perforante");p60boton.setText("60mm");}
+        }
+    }
     
 }
